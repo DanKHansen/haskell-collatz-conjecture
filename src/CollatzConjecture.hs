@@ -1,8 +1,11 @@
+{-# LANGUAGE BangPatterns #-}
+
 module CollatzConjecture (collatz) where
 
 collatz :: Integer -> Maybe Integer
-collatz 1 = Just 0
 collatz n
-  | n <= 0 = Nothing
-  | even n = fmap (+ 1) (collatz (div n 2))
-  | otherwise = fmap (+ 1) (collatz (3 * n + 1))
+  | n > 0 = Just (loop 0 n)
+  | otherwise = Nothing
+  where
+    loop !acc 1 = acc
+    loop !acc i = loop (acc + 1) (if even i then div i 2 else 3 * i + 1)
