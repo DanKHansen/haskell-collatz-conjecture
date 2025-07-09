@@ -1,11 +1,8 @@
 module CollatzConjecture (collatz) where
 
 collatz :: Integer -> Maybe Integer
-collatz n = loop n 0
-
-loop :: Integer -> Integer -> Maybe Integer
-loop n acc
+collatz 1 = Just 0
+collatz n
   | n <= 0 = Nothing
-  | n == 1 = Just acc
-  | even n = loop (div n 2) (acc + 1)
-  | otherwise = loop (3 * n + 1) (acc + 1)
+  | even n = fmap (+ 1) (collatz (div n 2))
+  | otherwise = fmap (+ 1) (collatz (3 * n + 1))
